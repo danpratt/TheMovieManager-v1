@@ -54,11 +54,11 @@ extension TMDBAuthViewController: UIWebViewDelegate {
     
     // When webView finishes loading, if it is the consent page, dismiss the view
     func webViewDidFinishLoad(_ webView: UIWebView) {
-        // hold the last path component as a string
-        let lastPathComponent = webView.request?.url?.lastPathComponent
-        // if we are at /allow page, that means login happened.  Can dismiss controller now
-        if lastPathComponent == "allow" {
-            dismiss(animated: true, completion: nil)
+        if webView.request!.url!.absoluteString == "\(TMDBClient.Constants.AuthorizationURL)\(requestToken!)/allow" {
+            
+            dismiss(animated: true, completion: { 
+                self.completionHandlerForView!(true, nil)
+            })
         }
     }
 }
